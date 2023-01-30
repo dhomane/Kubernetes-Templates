@@ -1,0 +1,47 @@
+---
+- name: Ansible k8s module example
+
+# Creating the namespace in the kubernete cluster
+  hosts: all
+  
+# Defining the remote server where the k8 module will manage the objects
+  remote_user: dhomane   # Using Remote user as ubuntu
+  
+  
+  tasks:
+    - name: Create a k8s namespace
+      k8s:
+        name: awx # defining the namespace
+        api_version: v1
+        kind: Namespace
+        state: present    # State=present when you need to create new object
+
+# Copying the Pod.yaml and deployment.yaml in the remote node which will be further used to create the pods and deployment in the kubernetes cluster
+
+    - name: copying file with playbook
+      become: true
+      copy:
+        src: ./pod.yaml
+        dest: /tmp/pod.yaml
+
+    - name: copying file with playbook
+      become: true
+      copy:
+        src: ./deployment.yaml
+        dest: /tmp/deployment.yaml
+
+# Creating a Kubernetes pod in ata-namespace using file stored locally
+
+    - name: Create a pod
+      k8s:
+        state: present      # State=present when you need to create new object
+        namespace: awx  # defining the namespace
+        src: /tmp/pod.yaml
+
+# Creating a Kubernetes deployment in ata-namespace using file stored locally
+
+    - name: Create a deployment
+      k8s:
+        state: present            # State=present when you need to create new object
+        namespace: awx  # defining the namespace
+        src: /tmp/deployment.yaml  # Source file location

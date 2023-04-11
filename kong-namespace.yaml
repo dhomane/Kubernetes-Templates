@@ -1,6 +1,6 @@
 #
 #  Author: Hari Sekhon
-#  Date: 2019-11-25 13:47:16 +0000 (Mon, 25 Nov 2019)
+#  Date: 2023-04-10 23:57:36 +0100 (Mon, 10 Apr 2023)
 #
 #  vim:ts=2:sts=2:sw=2:et
 #  lint: k8s
@@ -16,25 +16,13 @@
 #
 
 # ============================================================================ #
-#              S e r v i c e   w i t h   E x t e r n a l   N a m e
+#                          K o n g   N a m e s p a c e
 # ============================================================================ #
-
-# https://kubernetes.io/docs/concepts/services-networking/service/#externalname
-
-# combine with endpoints.yaml
 
 ---
 apiVersion: v1
-kind: Service
+kind: Namespace
 metadata:
-  name: NAME
-  namespace: NAMESPACE
+  name: kong
   labels:
-    app: APP
-  #annotations:
-  #  konghq.com/path: "/some-path"
-  #  konghq.com/plugins: "key-auth"
-spec:
-  type: ExternalName
-  externalName: NAME.DOMAIN.COM
-  #externalName: myservice.default.svc.cluster.local
+    goldilocks.fairwinds.com/enabled: "true"
